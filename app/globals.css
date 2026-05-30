@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FAF7F2;
+  --foreground: #2C2416;
+  --surface: #FFFFFF;
+  --border-color: #E8E0D5;
+  --primary: #C4622D;
+  --secondary: #4A7C59;
+  --text-primary: #2C2416;
+  --text-secondary: #7A6E64;
+  --orange-tint: #F5E6DC;
+  --green-tint: #DCF0E4;
+  --destructive: #991B1B;
+}
+
+:root.dark {
+  --background: #1C1C1A;
+  --foreground: #F0EBE3;
+  --surface: #252523;
+  --border-color: #3A3A36;
+  --primary: #D4733D;
+  --secondary: #5A8F6A;
+  --text-primary: #F0EBE3;
+  --text-secondary: #9A9590;
+  --orange-tint: #3D291F;
+  --green-tint: #243D2D;
+  --destructive: #EF4444;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-border: var(--border-color);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-orange-tint: var(--orange-tint);
+  --color-green-tint: var(--green-tint);
+  --color-destructive: var(--destructive);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
