@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { MapPin, Briefcase, FileText, ArrowLeft, Settings, CalendarRange } from 'lucide-react';
+import RequestModal from '@/components/profile/request-modal';
 
 interface ProfilePageProps {
   params: Promise<{
@@ -72,6 +73,19 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       signedResumeUrl = signedData.signedUrl;
     }
   }
+
+  // 6. Fetch seeker's (current viewer's) companies to populate the request dropdown
+  const { data: seekerCompanies } = await supabase
+    .from('user_companies')
+    .select(`
+      company_id,
+      companies (
+        id,
+        name,
+        slug
+      )
+    `)
+    .eq('user_id', currentUser.id);
 
   const nameLetter = profile.name.charAt(0).toUpperCase();
 
@@ -251,6 +265,17 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           </div>
         )}
       </div>
+
+      {/* ── Schedulers Overlay Modal ── */}
+      {!isOwner && (
+        <RequestModal
+          helperId={profile.id}
+          helperName={profile.name}
+          currentUserId={currentUser.id}
+          currentUserHasResume={!!currentUserProfile?.resume_url || false}
+          seekerCompanies={(seekerCompanies as any[]) || []}
+        />
+      )}
     </div>
   );
 }
