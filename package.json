@@ -1,12 +1,13 @@
 {
-  "name": "temp-next-app",
+  "name": "peerprep",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:seed": "npx tsx supabase/seed-questions.ts"
   },
   "dependencies": {
     "@daily-co/daily-js": "^0.87.0",
