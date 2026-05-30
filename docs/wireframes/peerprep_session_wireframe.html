@@ -1,0 +1,132 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.frame{display:flex;height:600px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-primary)}
+.left-panel{width:220px;min-width:220px;border-right:0.5px solid var(--color-border-tertiary);overflow-y:auto;display:flex;flex-direction:column}
+.panel-header{padding:12px 14px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px;font-weight:500;color:var(--color-text-primary);background:var(--color-background-primary);position:sticky;top:0}
+.panel-section{padding:10px 14px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.panel-section-title{font-size:10px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.q-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;padding:8px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary)}
+.q-item.checked{background:#DCF0E4;border-color:#4A7C59}
+.q-check{width:14px;height:14px;border:1.5px solid var(--color-border-secondary);border-radius:3px;flex-shrink:0;margin-top:1px}
+.q-check.done{background:#4A7C59;border-color:#4A7C59;display:flex;align-items:center;justify-content:center}
+.q-check.done::after{content:'✓';color:#fff;font-size:9px}
+.q-text{font-size:11px;color:var(--color-text-primary);line-height:1.4}
+.q-badge{display:inline-block;padding:1px 5px;border-radius:3px;font-size:10px;margin-top:3px}
+.q-easy{background:#DCF0E4;color:#4A7C59}
+.q-medium{background:#FEF3C7;color:#92400E}
+.q-hard{background:#FEE2E2;color:#991B1B}
+.hr-item{font-size:11px;color:var(--color-text-primary);padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);line-height:1.4}
+.centre-panel{flex:1;display:flex;flex-direction:column;border-right:0.5px solid var(--color-border-tertiary)}
+.video-area{flex:1;background:#1C1C1A;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;position:relative}
+.video-label{color:#9A9590;font-size:12px}
+.video-icon{width:56px;height:56px;border-radius:50%;background:#252523;display:flex;align-items:center;justify-content:center;color:#D4733D;font-size:28px}
+.video-controls{padding:10px 14px;background:#252523;display:flex;align-items:center;justify-content:center;gap:12px}
+.vc-btn{width:36px;height:36px;border-radius:50%;border:0.5px solid #3A3A36;background:#1C1C1A;display:flex;align-items:center;justify-content:center;color:#F0EBE3;font-size:16px;cursor:pointer}
+.vc-btn.end{background:#991B1B;border-color:#991B1B}
+.session-info{padding:8px 14px;border-top:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--color-text-secondary)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#4A7C59;display:inline-block;margin-right:5px}
+.right-panel{width:220px;min-width:220px;overflow-y:auto;display:flex;flex-direction:column}
+.feedback-form{padding:14px;flex:1}
+.fb-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:14px}
+.fb-field{margin-bottom:12px}
+.fb-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:5px}
+.stars{display:flex;gap:3px}
+.star{width:16px;height:16px;border-radius:2px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary)}
+.star.filled{background:#C4622D;border-color:#C4622D}
+.fb-textarea{width:100%;padding:7px 9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:11px;color:var(--color-text-primary);background:var(--color-background-primary);resize:none;height:64px;font-family:var(--font-sans)}
+.fb-submit{width:100%;padding:9px;background:#C4622D;color:#fff;border-radius:6px;font-size:12px;font-weight:500;border:none;cursor:pointer;margin-top:4px}
+</style>
+<div style="padding:1rem 0">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:500">SCREEN 3 — Live Session (interviewer view)</p>
+<div class="frame">
+  <div class="left-panel">
+    <div class="panel-header"><i class="ti ti-list-check" aria-hidden="true"></i>  Questions · Google SDE</div>
+    <div class="panel-section">
+      <div class="panel-section-title">DSA</div>
+      <div class="q-item checked">
+        <div class="q-check done"></div>
+        <div><div class="q-text">Two Sum</div><span class="q-badge q-easy">Easy</span></div>
+      </div>
+      <div class="q-item">
+        <div class="q-check"></div>
+        <div><div class="q-text">Longest Substring Without Repeating Characters</div><span class="q-badge q-medium">Medium</span></div>
+      </div>
+      <div class="q-item">
+        <div class="q-check"></div>
+        <div><div class="q-text">Word Ladder</div><span class="q-badge q-hard">Hard</span></div>
+      </div>
+      <div class="q-item">
+        <div class="q-check"></div>
+        <div><div class="q-text">Merge K Sorted Lists</div><span class="q-badge q-hard">Hard</span></div>
+      </div>
+    </div>
+    <div class="panel-section">
+      <div class="panel-section-title">HR</div>
+      <div class="hr-item">Tell me about a project you're most proud of</div>
+      <div class="hr-item" style="border:none">How do you handle tight deadlines?</div>
+    </div>
+    <div class="panel-section">
+      <div class="panel-section-title">Project</div>
+      <div class="hr-item">Walk me through your most complex system</div>
+      <div class="hr-item" style="border:none">What trade-offs did you make and why?</div>
+    </div>
+  </div>
+  <div class="centre-panel">
+    <div class="video-area">
+      <div class="video-icon"><i class="ti ti-video" aria-hidden="true"></i></div>
+      <div class="video-label">Daily.co embedded call</div>
+      <div style="font-size:10px;color:#5F5E5A">Camera · Mic · Screen share</div>
+    </div>
+    <div class="video-controls">
+      <div class="vc-btn"><i class="ti ti-microphone" aria-hidden="true"></i></div>
+      <div class="vc-btn"><i class="ti ti-video" aria-hidden="true"></i></div>
+      <div class="vc-btn"><i class="ti ti-screen-share" aria-hidden="true"></i></div>
+      <div class="vc-btn end"><i class="ti ti-phone-off" aria-hidden="true"></i></div>
+    </div>
+    <div class="session-info">
+      <span><span class="live-dot"></span>Live · Google SDE · Rahul M.</span>
+      <span>38:14</span>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="panel-header">Feedback</div>
+    <div class="feedback-form">
+      <div class="fb-field">
+        <div class="fb-label">Clarity of thought</div>
+        <div class="stars">
+          <div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star"></div>
+        </div>
+      </div>
+      <div class="fb-field">
+        <div class="fb-label">Communication</div>
+        <div class="stars">
+          <div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star"></div><div class="star"></div>
+        </div>
+      </div>
+      <div class="fb-field">
+        <div class="fb-label">Problem-solving</div>
+        <div class="stars">
+          <div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star"></div>
+        </div>
+      </div>
+      <div class="fb-field">
+        <div class="fb-label">Code quality</div>
+        <div class="stars">
+          <div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star"></div><div class="star"></div>
+        </div>
+      </div>
+      <div class="fb-field">
+        <div class="fb-label">Time management</div>
+        <div class="stars">
+          <div class="star filled"></div><div class="star filled"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+        </div>
+      </div>
+      <div class="fb-field">
+        <div class="fb-label">Notes</div>
+        <textarea class="fb-textarea" readonly>Good approach on Two Sum. Needs work on edge cases for the sliding window problem...</textarea>
+      </div>
+      <button class="fb-submit">Submit feedback</button>
+    </div>
+  </div>
+</div>
+</div>

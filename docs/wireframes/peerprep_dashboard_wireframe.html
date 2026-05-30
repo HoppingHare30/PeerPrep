@@ -1,0 +1,104 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:var(--color-background-tertiary)}
+.frame{display:flex;height:580px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-primary)}
+.sidebar{width:200px;min-width:200px;border-right:0.5px solid var(--color-border-tertiary);display:flex;flex-direction:column;padding:16px 0;background:var(--color-background-primary)}
+.logo{padding:0 16px 16px;font-size:15px;font-weight:500;color:var(--color-text-primary);border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:8px}
+.logo span{color:#C4622D}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 16px;font-size:13px;color:var(--color-text-secondary);cursor:pointer}
+.nav-item.active{color:#C4622D;background:#F5E6DC;border-left:3px solid #C4622D;padding-left:13px}
+.nav-item i{font-size:16px}
+.sidebar-bottom{margin-top:auto;padding:12px 16px;border-top:0.5px solid var(--color-border-tertiary)}
+.avatar-row{display:flex;align-items:center;gap:8px}
+.avatar{width:28px;height:28px;border-radius:50%;background:#F5E6DC;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#C4622D}
+.avname{font-size:12px;color:var(--color-text-secondary)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.toggle-label{font-size:11px;color:var(--color-text-secondary)}
+.toggle{width:28px;height:16px;background:#4A7C59;border-radius:8px;position:relative}
+.toggle::after{content:'';position:absolute;right:2px;top:2px;width:12px;height:12px;background:#fff;border-radius:50%}
+.main{flex:1;overflow:auto;padding:24px}
+.page-title{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.page-sub{font-size:12px;color:var(--color-text-secondary);margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px}
+.stat-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+.stat-val{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.section-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px}
+.session-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.sc-icon{width:36px;height:36px;border-radius:var(--border-radius-md);background:#F5E6DC;display:flex;align-items:center;justify-content:center;color:#C4622D;font-size:18px}
+.sc-info{flex:1}
+.sc-title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.sc-sub{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
+.badge-pending{background:#FEF3C7;color:#92400E}
+.badge-accepted{background:#DCF0E4;color:#4A7C59}
+.cta{margin-top:16px;padding:10px 16px;background:#C4622D;color:#fff;border-radius:6px;font-size:13px;font-weight:500;border:none;cursor:pointer;display:inline-block}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.quick-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:14px}
+.qc-title{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em}
+.qc-btn{display:block;padding:8px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-primary);margin-bottom:6px;cursor:pointer}
+</style>
+<div style="padding:1rem 0">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:500">SCREEN 1 — Dashboard</p>
+<div class="frame">
+  <div class="sidebar">
+    <div class="logo"><span>Peer</span>Prep</div>
+    <div class="nav-item active"><i class="ti ti-home" aria-hidden="true"></i> Dashboard</div>
+    <div class="nav-item"><i class="ti ti-search" aria-hidden="true"></i> Search</div>
+    <div class="nav-item"><i class="ti ti-calendar" aria-hidden="true"></i> Sessions</div>
+    <div class="nav-item"><i class="ti ti-user" aria-hidden="true"></i> Profile</div>
+    <div class="nav-item"><i class="ti ti-settings" aria-hidden="true"></i> Settings</div>
+    <div class="sidebar-bottom">
+      <div class="avatar-row">
+        <div class="avatar">SG</div>
+        <div class="avname">Shagun</div>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Available</span>
+        <div class="toggle"></div>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="page-title">Good morning, Shagun</div>
+    <div class="page-sub">IIT Roorkee · Graduation 2026</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-label">Sessions done</div><div class="stat-val">4</div></div>
+      <div class="stat"><div class="stat-label">As interviewer</div><div class="stat-val">2</div></div>
+      <div class="stat"><div class="stat-label">Feedback received</div><div class="stat-val">3</div></div>
+    </div>
+    <div class="section-title">Upcoming sessions</div>
+    <div class="session-card">
+      <div class="sc-icon"><i class="ti ti-video" aria-hidden="true"></i></div>
+      <div class="sc-info">
+        <div class="sc-title">Google SDE mock — as interviewee</div>
+        <div class="sc-sub">Tomorrow, 3:00 PM · with Rahul M.</div>
+      </div>
+      <span class="badge badge-accepted">Accepted</span>
+    </div>
+    <div class="session-card">
+      <div class="sc-icon"><i class="ti ti-clock" aria-hidden="true"></i></div>
+      <div class="sc-info">
+        <div class="sc-title">Amazon SDE mock — as interviewer</div>
+        <div class="sc-sub">Awaiting response · sent 2 hrs ago</div>
+      </div>
+      <span class="badge badge-pending">Pending</span>
+    </div>
+    <div class="two-col">
+      <div class="quick-card">
+        <div class="qc-title">Quick actions</div>
+        <div class="qc-btn"><i class="ti ti-search" aria-hidden="true"></i>  Find an interviewer</div>
+        <div class="qc-btn"><i class="ti ti-edit" aria-hidden="true"></i>  Update my companies</div>
+      </div>
+      <div class="quick-card">
+        <div class="qc-title">Notifications</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.8">
+          <div>· Rahul accepted your request</div>
+          <div>· Session reminder in 20 hrs</div>
+          <div>· Priya left you feedback</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
