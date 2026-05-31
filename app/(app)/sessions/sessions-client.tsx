@@ -303,7 +303,7 @@ export default function SessionsClient({ initialSessions, currentUserId }: Sessi
                   {isConfirmed && session.scheduled_at && (
                     <div className="bg-green-tint/40 p-2.5 rounded-lg border border-secondary/20 flex items-center space-x-2 text-xs text-secondary font-medium">
                       <Calendar className="h-4 w-4" />
-                      <span>
+                      <span suppressHydrationWarning>
                         Confirmed Time:{' '}
                         {new Date(session.scheduled_at).toLocaleDateString(undefined, {
                           weekday: 'short',
