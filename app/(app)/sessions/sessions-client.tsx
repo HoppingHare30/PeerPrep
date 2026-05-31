@@ -476,7 +476,7 @@ export default function SessionsClient({ initialSessions, currentUserId }: Sessi
             className="bg-surface border border-border w-full max-w-lg rounded-2xl shadow-xl overflow-hidden animate-in slide-in-from-bottom-5 duration-300 flex flex-col max-h-[90vh]"
           >
             {/* Modal Header */}
-            <div className="bg-gradient-to-br from-primary/10 via-surface to-secondary/5 p-6 border-b border-border relative shrink-0">
+            <div className="bg-surface p-6 border-b border-border relative shrink-0">
               <button
                 onClick={() => router.push('/sessions')}
                 className="absolute top-4 right-4 p-1.5 rounded-lg border border-border hover:bg-orange-tint/40 text-text-secondary hover:text-text-primary transition cursor-pointer"

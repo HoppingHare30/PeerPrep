@@ -80,7 +80,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8 animate-in fade-in duration-200">
       {/* ── GREETING HERO SECTION ── */}
-      <div className="bg-gradient-to-r from-primary/10 via-surface to-secondary/5 border border-border rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-sm">
+      <div className="bg-orange-tint/40 border border-border rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-sm">
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-text-primary">
             Welcome back, <span className="text-primary">{profile.name}</span>!

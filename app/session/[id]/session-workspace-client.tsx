@@ -393,8 +393,8 @@ export default function SessionWorkspaceClient({
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
         <div className="max-w-2xl w-full bg-surface border border-border rounded-2xl shadow-md p-6 sm:p-10 text-center space-y-8 relative overflow-hidden">
-          {/* Decorative gradients */}
-          <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary via-orange-tint to-secondary" />
+          {/* Decorative top bar */}
+          <div className="absolute top-0 inset-x-0 h-1.5 bg-primary" />
 
           {/* Lobby Header */}
           <div className="space-y-2">
