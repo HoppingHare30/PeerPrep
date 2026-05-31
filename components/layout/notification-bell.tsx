@@ -46,7 +46,7 @@ export default function NotificationBell() {
 
     // Subscribe to new notifications in real-time
     const channel = supabase
-      .channel('realtime_notifications')
+      .channel(`realtime_notifications_${Math.random()}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'notifications' },
@@ -80,7 +80,7 @@ export default function NotificationBell() {
         .eq('id', id);
 
       if (error) throw error;
-      
+
       setNotifications(
         notifications.map((n) => (n.id === id ? { ...n, read: true } : n))
       );
@@ -149,9 +149,8 @@ export default function NotificationBell() {
               notifications.map((item) => (
                 <div
                   key={item.id}
-                  className={`p-3 text-left transition duration-150 flex items-start justify-between space-x-2 ${
-                    !item.read ? 'bg-orange-tint/40' : 'bg-transparent'
-                  }`}
+                  className={`p-3 text-left transition duration-150 flex items-start justify-between space-x-2 ${!item.read ? 'bg-orange-tint/40' : 'bg-transparent'
+                    }`}
                 >
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-text-primary leading-normal break-words font-medium">

@@ -34,7 +34,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   // 3. Fetch the logged in user's college domain to verify same-college scope constraint
   const { data: currentUserProfile } = await supabase
     .from('users')
-    .select('college')
+    .select('college, resume_url')
     .eq('id', currentUser.id)
     .single();
 
@@ -220,7 +220,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             <p className="text-sm italic text-text-secondary">No skills listed yet.</p>
           ) : (
             <div className="flex flex-wrap gap-2">
-              {profile.skills.map((skill) => (
+              {profile.skills.map((skill: string) => (
                 <span
                   key={skill}
                   className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-tint/40 text-text-secondary border border-border"

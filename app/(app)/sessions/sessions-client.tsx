@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 import {
@@ -16,7 +16,9 @@ import {
   Clock3,
   ExternalLink,
   ChevronDown,
-  MessageSquare
+  MessageSquare,
+  X,
+  Star
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -37,6 +39,10 @@ export default function SessionsClient({ initialSessions, currentUserId }: Sessi
   const [selectedSlots, setSelectedSlots] = useState<Record<string, number>>({});
   const [rejectionNotes, setRejectionNotes] = useState<Record<string, string>>({});
   const [actionLoading, setActionLoading] = useState<Record<string, boolean>>({});
+
+  const searchParams = useSearchParams();
+  const feedbackSessionId = searchParams.get('feedback');
+  const feedbackSession = feedbackSessionId ? sessions.find(s => s.id === feedbackSessionId) : null;
 
   // Filter sessions by tab and status
   const filteredSessions = sessions.filter((s) => {
@@ -459,6 +465,145 @@ export default function SessionsClient({ initialSessions, currentUserId }: Sessi
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* ── PHASE 10: DYNAMIC STRUCTURED FEEDBACK VIEWER MODAL ── */}
+      {feedbackSession && (
+        <div className="fixed inset-0 bg-[#2C2416]/40 backdrop-blur-md z-50 flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-surface border border-border w-full max-w-lg rounded-2xl shadow-xl overflow-hidden animate-in slide-in-from-bottom-5 duration-300 flex flex-col max-h-[90vh]"
+          >
+            {/* Modal Header */}
+            <div className="bg-gradient-to-br from-primary/10 via-surface to-secondary/5 p-6 border-b border-border relative shrink-0">
+              <button
+                onClick={() => router.push('/sessions')}
+                className="absolute top-4 right-4 p-1.5 rounded-lg border border-border hover:bg-orange-tint/40 text-text-secondary hover:text-text-primary transition cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              
+              <div className="space-y-1">
+                <span className="text-[10px] font-extrabold text-primary uppercase tracking-wider block">
+                  PeerPrep Evaluation Scorecard
+                </span>
+                <h3 className="text-lg font-extrabold text-text-primary">
+                  {feedbackSession.company?.name || 'Mock Interview'} Assessment
+                </h3>
+                <p className="text-xs text-text-secondary">
+                  Conducted by <span className="font-semibold text-text-primary">{feedbackSession.interviewer?.name}</span> ({feedbackSession.interviewer?.college})
+                </p>
+              </div>
+            </div>
+
+            {/* Modal Body (Scrollable) */}
+            <div className="p-6 overflow-y-auto space-y-6">
+              {feedbackSession.feedback ? (
+                <>
+                  {/* Score breakdown metrics list */}
+                  <div className="space-y-4">
+                    <h4 className="text-xs font-extrabold text-text-primary uppercase tracking-wider pb-1.5 border-b border-border/60">
+                      Core Skills Ratings
+                    </h4>
+                    
+                    {[
+                      {
+                        label: 'Problem Solving',
+                        desc: 'Algorithm design, constraint analysis, optimization.',
+                        score: feedbackSession.feedback.problem_solving_score,
+                      },
+                      {
+                        label: 'Communication & Presentation',
+                        desc: 'Technical vocabulary, active explanation of thoughts.',
+                        score: feedbackSession.feedback.communication_score,
+                      },
+                      {
+                        label: 'Code Quality & Design',
+                        desc: 'Modular design, proper typing, syntax completeness.',
+                        score: feedbackSession.feedback.code_quality_score,
+                      },
+                      {
+                        label: 'Clarity of Thought',
+                        desc: 'Systematic approach, avoiding random guessing.',
+                        score: feedbackSession.feedback.clarity_score,
+                      },
+                      {
+                        label: 'Time Management',
+                        desc: 'Keeping pace, allocating time to coding vs design.',
+                        score: feedbackSession.feedback.time_management_score,
+                      },
+                    ].map((metric, idx) => (
+                      <div key={idx} className="space-y-2">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="text-xs font-bold text-text-primary leading-none">
+                              {metric.label}
+                            </p>
+                            <p className="text-[10px] text-text-secondary mt-1">
+                              {metric.desc}
+                            </p>
+                          </div>
+                          <span className="text-xs font-extrabold text-primary shrink-0 ml-4 bg-orange-tint/50 border border-primary/10 px-2 py-0.5 rounded-full">
+                            {metric.score} / 5
+                          </span>
+                        </div>
+                        
+                        {/* Rating stars rendering */}
+                        <div className="flex gap-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star
+                              key={star}
+                              className={`h-4 w-4 ${
+                                star <= metric.score
+                                  ? 'text-primary fill-primary'
+                                  : 'text-border fill-background'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Constructive notes feedback */}
+                  {feedbackSession.feedback.notes && (
+                    <div className="space-y-2 pt-2">
+                      <h4 className="text-xs font-extrabold text-text-primary uppercase tracking-wider pb-1.5 border-b border-border/60">
+                        Written Evaluation
+                      </h4>
+                      <div className="bg-background/50 border-l-4 border-primary p-4 rounded-r-xl italic text-xs leading-relaxed text-text-primary">
+                        "{feedbackSession.feedback.notes}"
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="text-center py-8 space-y-3">
+                  <AlertCircle className="h-8 w-8 text-primary mx-auto animate-pulse" />
+                  <div className="space-y-1">
+                    <p className="text-xs font-extrabold text-text-primary">
+                      Feedback Scorecard Pending
+                    </p>
+                    <p className="text-[10px] text-text-secondary max-w-xs mx-auto leading-relaxed">
+                      Your interviewer has not yet finalized their evaluation for this mock session. It will appear here immediately once submitted.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-border bg-background/30 flex justify-end shrink-0">
+              <button
+                onClick={() => router.push('/sessions')}
+                className="px-4 py-2 bg-primary hover:bg-primary/95 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
+              >
+                Close Scorecard
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

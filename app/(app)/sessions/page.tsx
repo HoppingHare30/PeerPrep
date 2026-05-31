@@ -20,7 +20,8 @@ export default async function SessionsPage() {
       *,
       interviewee:interviewee_id (id, name, college, graduation_year, resume_url),
       interviewer:interviewer_id (id, name, college, graduation_year),
-      company:company_id (id, name, slug)
+      company:company_id (id, name, slug),
+      feedback:feedback(*)
     `)
     .or(`interviewee_id.eq.${user.id},interviewer_id.eq.${user.id}`)
     .order('created_at', { ascending: false });

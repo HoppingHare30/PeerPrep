@@ -34,7 +34,7 @@ async function seedQuestionCache() {
     try {
       console.log(`📡 Fetching CSV data for ${company.name}...`);
       // URL pattern from snehasishroy/leetcode-companywise-interview-questions
-      const url = `https://raw.githubusercontent.com/snehasishroy/leetcode-companywise-interview-questions/master/data/${company.slug}_alltime.csv`;
+      const url = `https://raw.githubusercontent.com/snehasishroy/leetcode-companywise-interview-questions/master/${company.slug.toLowerCase()}/all.csv`;
       
       const response = await fetch(url);
       if (!response.ok) {
@@ -55,13 +55,17 @@ async function seedQuestionCache() {
       }
 
       // Format parsed data
-      const questions = parsed.data.map((row: any, index: number) => ({
-        id: row.ID || row.id || String(index + 1),
-        title: row.Question || row.Title || row.title || 'Unknown Question',
-        titleSlug: row.TitleSlug || row.titleSlug || '',
-        difficulty: row.Difficulty || row.difficulty || 'Medium',
-        frequency: parseFloat(row.Frequency || row.frequency || '0') || 0,
-      }));
+      const questions = parsed.data.map((row: any, index: number) => {
+        const urlStr = row.URL || row.url || '';
+        const extractedSlug = urlStr.split('/').filter(Boolean).pop() || '';
+        return {
+          id: row.ID || row.id || String(index + 1),
+          title: row.Question || row.Title || row.title || 'Unknown Question',
+          titleSlug: extractedSlug || row.TitleSlug || row.titleSlug || '',
+          difficulty: row.Difficulty || row.difficulty || 'Medium',
+          frequency: parseFloat(String(row['Frequency %'] || row.Frequency || row.frequency || '0').replace('%', '')) || 0,
+        };
+      });
 
       // Cache limit to top 50 questions per company for memory optimization
       const topQuestions = questions
@@ -70,7 +74,7 @@ async function seedQuestionCache() {
 
       // Predefined local fallback hints to seed the cache immediately (AS-003 fallback mechanism)
       const fallbackHints = topQuestions.slice(0, 5).map((q) => ({
-        questionId: q.id,
+        id: q.id,
         title: q.title,
         bruteForce: 'Brute-force simulation of the constraints. Typically O(N^2) or O(2^N) traversal.',
         optimal: 'Optimal optimization utilizing hash maps, two pointers, or sliding window strategies.',

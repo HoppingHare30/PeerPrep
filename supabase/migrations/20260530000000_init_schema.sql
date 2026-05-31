@@ -261,8 +261,20 @@ CREATE POLICY "Allow self updates"
   USING (id = auth.uid());
 
 -- ── public.user_companies policies ──
-CREATE POLICY "Allow CRUD on own user_companies"
-  ON public.user_companies FOR ALL TO authenticated
+CREATE POLICY "Allow select of user_companies for all authenticated users"
+  ON public.user_companies FOR SELECT TO authenticated
+  USING (true);
+
+CREATE POLICY "Allow insert of own user_companies"
+  ON public.user_companies FOR INSERT TO authenticated
+  WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY "Allow update of own user_companies"
+  ON public.user_companies FOR UPDATE TO authenticated
+  USING (user_id = auth.uid());
+
+CREATE POLICY "Allow delete of own user_companies"
+  ON public.user_companies FOR DELETE TO authenticated
   USING (user_id = auth.uid());
 
 -- ── public.companies policies ──
@@ -304,6 +316,10 @@ CREATE POLICY "Allow read of own notifications"
 CREATE POLICY "Allow update of own notifications"
   ON public.notifications FOR UPDATE TO authenticated
   USING (user_id = auth.uid());
+
+CREATE POLICY "Allow insert of notifications"
+  ON public.notifications FOR INSERT TO authenticated
+  WITH CHECK (true);
 
 -- ── public.question_cache policies ──
 CREATE POLICY "Allow all authenticated users to read question cache"

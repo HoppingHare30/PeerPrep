@@ -164,7 +164,7 @@ export default function RequestModal({
         .insert({
           user_id: helperId,
           type: 'session_request',
-          message: `New mock request received! Your peer wants to practice an interview for ${sessionData.company.name}.`,
+          message: `New mock request received! Your peer wants to practice an interview for ${(sessionData.company as any).name}.`,
           session_id: sessionData.id,
         });
 
@@ -199,7 +199,7 @@ export default function RequestModal({
               helperEmail: helperProfile.email,
               helperName: helperProfile.name,
               seekerName: seekerProfile?.name || 'Your Peer',
-              companyName: sessionData.company.name,
+              companyName: (sessionData.company as any).name,
               note: requestNote.trim() || undefined,
             }),
           }).catch(err => console.error('Silent email fetch err:', err));
