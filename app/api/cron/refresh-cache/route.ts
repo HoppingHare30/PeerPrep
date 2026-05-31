@@ -41,7 +41,7 @@ export async function GET(request: Request) {
     }
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-    console.log('⏳ Starting scheduled refresh of question cache for target companies...');
+    console.log('[Cron] Starting scheduled refresh of question cache for target companies...');
 
     const summary: Record<string, any> = {};
 

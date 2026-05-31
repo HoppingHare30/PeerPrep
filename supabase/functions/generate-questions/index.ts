@@ -22,7 +22,7 @@ serve(async (req) => {
       });
     }
 
-    console.log(`🤖 Processing question generation for session=${session_id}, company=${company_slug}...`);
+    console.log(`[Groq] Processing question generation for session=${session_id}, company=${company_slug}...`);
 
     // 1. Initialize Supabase Admin Client
     const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
@@ -90,7 +90,7 @@ serve(async (req) => {
 
       for (let attempt = 1; attempt <= 2; attempt++) {
         try {
-          console.log(`📡 Dispatching prompt to Groq API (Attempt ${attempt}/2)...`);
+          console.log(`[Groq] Dispatching prompt to Groq API (Attempt ${attempt}/2)...`);
           
           const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
@@ -123,11 +123,11 @@ serve(async (req) => {
           parsedDsaHints = JSON.parse(cleanJsonText);
           if (Array.isArray(parsedDsaHints) && parsedDsaHints.length > 0) {
             generationSuccess = true;
-            console.log(`✅ Groq hints generated successfully.`);
+            console.log(`[Groq Success] Groq hints generated successfully.`);
             break;
           }
         } catch (err: any) {
-          console.warn(`⚠️ Groq Attempt ${attempt} failed:`, err.message);
+          console.warn(`[Groq Warning] Groq Attempt ${attempt} failed:`, err.message);
           if (attempt === 1) {
             // Wait 3 seconds before retrying
             await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -138,7 +138,7 @@ serve(async (req) => {
 
     // 4. Handle Fallbacks if Groq completely fails
     if (!generationSuccess) {
-      console.warn("⚠️ Groq generation failed. Activating local cache fallback hints.");
+      console.warn("[Groq Warning] Groq generation failed. Activating local cache fallback hints.");
       if (fallbackHints && fallbackHints.length > 0) {
         parsedDsaHints = fallbackHints;
       } else {
@@ -185,14 +185,14 @@ serve(async (req) => {
       throw updateErr;
     }
 
-    console.log(`🎉 Session ${session_id} questions sheet fully populated!`);
+    console.log(`[Lobby] Session ${session_id} questions sheet fully populated!`);
 
     return new Response(JSON.stringify({ success: true, fallback: !generationSuccess }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err: any) {
-    console.error("❌ Edge Function generate-questions failed:", err.message);
+    console.error("[Groq Error] Edge Function generate-questions failed:", err.message);
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

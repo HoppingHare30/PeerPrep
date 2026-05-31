@@ -32,7 +32,7 @@ async function seedQuestionCache() {
 
   for (const company of TOP_10_COMPANIES) {
     try {
-      console.log(`📡 Fetching CSV data for ${company.name}...`);
+      console.log(`[Seeder] Fetching CSV data for ${company.name}...`);
       // URL pattern from snehasishroy/leetcode-companywise-interview-questions
       const url = `https://raw.githubusercontent.com/snehasishroy/leetcode-companywise-interview-questions/master/${company.slug.toLowerCase()}/all.csv`;
       
@@ -99,9 +99,9 @@ async function seedQuestionCache() {
         throw error;
       }
 
-      console.log(`✅ Successfully seeded question cache for ${company.name}.`);
+      console.log(`[Seeder Success] Successfully seeded question cache for ${company.name}.`);
     } catch (error: any) {
-      console.error(`❌ Error seeding cache for ${company.name}:`, error.message);
+      console.error(`[Seeder Error] Error seeding cache for ${company.name}:`, error.message);
     }
   }
 

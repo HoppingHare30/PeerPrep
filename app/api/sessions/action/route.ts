@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
       if (dailyApiKey && !dailyApiKey.includes('placeholder')) {
         try {
-          console.log('📡 Generating dynamic Daily.co video room...');
+          console.log('[Daily] Generating dynamic Daily.co video room...');
           const room = await createDailyRoom(scheduledAtIso);
           dailyRoomUrl = room.url;
         } catch (roomErr: any) {
@@ -77,7 +77,7 @@ export async function POST(request: Request) {
       
       // Jitsi Meet Room Generator (Sole Primary Video Call Room - jitsi.belnet.be Belgian Server)
       const dailyRoomUrl = `https://jitsi.belnet.be/peerprep-${sessionId.substring(0, 8)}`;
-      console.log(`📡 Auto-generated Jitsi Meet conference room: ${dailyRoomUrl}`);
+      console.log(`[Jitsi] Auto-generated Jitsi Meet conference room: ${dailyRoomUrl}`);
 
       // b. Update session status, room URL, and confirmed scheduled time
       const { error: updateErr } = await supabase
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
       // c. Generate and Populate Question Sheet Inline (Zero-Deployment Edge Bypass!)
       try {
         const groqApiKey = process.env.GROQ_API_KEY;
-        console.log(`🤖 Inline generator: Processing company=${companySlug}, session=${sessionId}...`);
+        console.log(`[Groq] Inline generator: Processing company=${companySlug}, session=${sessionId}...`);
         
         // i. Fetch Question Cache
         const { data: cacheData } = await supabase
@@ -111,7 +111,7 @@ export async function POST(request: Request) {
           dsaQuestions = cacheData.questions_json || [];
           fallbackHints = cacheData.fallback_hints_json || [];
         } else {
-          console.log(`💾 DB cache empty for company=${companySlug}. Loading local fallback questions.`);
+          console.log(`[Cache] DB cache empty for company=${companySlug}. Loading local fallback questions.`);
           const localFallback = COMPANY_FALLBACK_QUESTIONS[companySlug] || COMPANY_FALLBACK_QUESTIONS['Google'];
           dsaQuestions = localFallback;
           fallbackHints = localFallback;
@@ -151,7 +151,7 @@ export async function POST(request: Request) {
           `;
 
           try {
-            console.log(`📡 Fetching Groq completions inline...`);
+            console.log(`[Groq] Fetching Groq completions inline...`);
             const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
               method: "POST",
               headers: {
@@ -178,19 +178,19 @@ export async function POST(request: Request) {
               parsedDsaHints = JSON.parse(cleanJsonText);
               if (Array.isArray(parsedDsaHints) && parsedDsaHints.length > 0) {
                 generationSuccess = true;
-                console.log(`✅ Groq hints generated successfully inline.`);
+                console.log(`[Groq Success] Hints generated successfully inline.`);
               }
             } else {
               console.warn(`Groq API returned error status: ${groqResponse.status}`);
             }
           } catch (err: any) {
-            console.warn(`⚠️ Groq inline generation failed:`, err.message);
+            console.warn(`[Groq Warning] Inline generation failed:`, err.message);
           }
         }
 
         // iii. Handle Fallbacks
         if (!generationSuccess) {
-          console.warn("⚠️ Inline Groq failed or key placeholder. Activating local cache fallbacks.");
+          console.warn("[Groq Warning] Inline Groq failed or key placeholder. Activating local cache fallbacks.");
           if (fallbackHints && fallbackHints.length > 0) {
             parsedDsaHints = fallbackHints;
           } else {
@@ -233,7 +233,7 @@ export async function POST(request: Request) {
           .eq('id', sessionId);
 
         if (saveErr) throw saveErr;
-        console.log(`🎉 Inline questions sheet fully populated!`);
+        console.log(`[Lobby] Inline questions sheet fully populated!`);
       } catch (edgeErr: any) {
         console.error('Failed to execute inline question generator:', edgeErr.message);
       }

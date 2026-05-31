@@ -14,7 +14,7 @@ export async function sendEmail({ to, subject, html }: SendEmailPayload): Promis
   }
 
   try {
-    console.log(`📡 Dispatching email via Resend to ${to}: "${subject}"...`);
+    console.log(`[Resend] Dispatching email via Resend to ${to}: "${subject}"...`);
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -31,15 +31,15 @@ export async function sendEmail({ to, subject, html }: SendEmailPayload): Promis
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error(`❌ Resend API returned error: ${response.statusText} - ${errText}`);
+      console.error(`[Resend Error] Resend API returned error: ${response.statusText} - ${errText}`);
       return false;
     }
 
     const data = await response.json();
-    console.log(`✅ Email sent successfully via Resend. ID: ${data.id}`);
+    console.log(`[Resend Success] Email sent successfully via Resend. ID: ${data.id}`);
     return true;
   } catch (err) {
-    console.error('❌ Resend email dispatch failed:', err);
+    console.error('[Resend Error] Resend email dispatch failed:', err);
     return false;
   }
 }
