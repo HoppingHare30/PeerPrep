@@ -237,19 +237,19 @@ export default function SessionWorkspaceClient({
     return () => clearInterval(interval);
   }, [sessionData.scheduled_at]);
 
+  // Determine start time for the elapsed timer
+  // If we enter early, count from the moment we mount the workspace. If we are late, count from the scheduled time.
+  const [timerStartTime] = useState(() => {
+    const now = Date.now();
+    const scheduledTime = new Date(sessionData.scheduled_at).getTime();
+    return now < scheduledTime ? now : scheduledTime;
+  });
+
   // 2. Interview elapsed timer (counts up when live)
   useEffect(() => {
-    const scheduledTime = new Date(sessionData.scheduled_at).getTime();
-
     const updateElapsed = () => {
-      const now = new Date().getTime();
-      const elapsedMs = now - scheduledTime;
-
-      // If it hasn't scheduled yet, just show 00:00
-      if (elapsedMs < 0) {
-        setElapsedTime('00:00');
-        return;
-      }
+      const now = Date.now();
+      const elapsedMs = now - timerStartTime;
 
       const minutes = Math.floor(elapsedMs / 1000 / 60);
       const seconds = Math.floor((elapsedMs / 1000) % 60);
@@ -260,9 +260,10 @@ export default function SessionWorkspaceClient({
       setElapsedTime(`${displayMin}:${displaySec}`);
     };
 
+    updateElapsed();
     const interval = setInterval(updateElapsed, 1000);
     return () => clearInterval(interval);
-  }, [sessionData.scheduled_at]);
+  }, [timerStartTime]);
 
   // Toggle checklist checkboxes remotely & sync
   const handleToggleQuestion = async (qId: string) => {
