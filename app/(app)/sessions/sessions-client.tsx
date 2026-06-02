@@ -81,7 +81,14 @@ export default function SessionsClient({ initialSessions, currentUserId }: Sessi
           setActionLoading((prev) => ({ ...prev, [sessionId]: false }));
           return;
         }
-        payload.slot = session.proposed_slots[index];
+        const selectedSlot = session.proposed_slots[index];
+        payload.slot = selectedSlot;
+        try {
+          const localDate = new Date(`${selectedSlot.date}T${selectedSlot.time}`);
+          payload.scheduledAt = localDate.toISOString();
+        } catch (e) {
+          console.error('Failed to parse slot date/time in client context:', e);
+        }
       }
 
       if (action === 'slots_rejected') {
@@ -115,7 +122,7 @@ export default function SessionsClient({ initialSessions, currentUserId }: Sessi
             ? {
                 ...s,
                 status: updatedStatus,
-                scheduled_at: action === 'accept' ? new Date(`${payload.slot.date}T${payload.slot.time}`).toISOString() : s.scheduled_at,
+                scheduled_at: action === 'accept' ? payload.scheduledAt || new Date(`${payload.slot.date}T${payload.slot.time}`).toISOString() : s.scheduled_at,
                 daily_room_url: action === 'accept' ? result.daily_room_url || s.daily_room_url : s.daily_room_url,
                 rejection_note: action === 'slots_rejected' ? payload.note : s.rejection_note,
               }

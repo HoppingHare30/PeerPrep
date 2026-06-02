@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     }
 
     // 2. Parse request payload
-    const { sessionId, action, slot, note } = await request.json();
+    const { sessionId, action, slot, note, scheduledAt } = await request.json();
     if (!sessionId || !action) {
       return NextResponse.json({ error: 'Missing parameters' }, { status: 400 });
     }
@@ -53,8 +53,8 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Missing slot parameters' }, { status: 400 });
       }
 
-      // Convert proposed slot string date/time to ISO timestamptz
-      const scheduledAtIso = new Date(`${slot.date}T${slot.time}`).toISOString();
+      // Convert proposed slot string date/time to ISO timestamptz (preferring client-side local offset)
+      const scheduledAtIso = scheduledAt || new Date(`${slot.date}T${slot.time}`).toISOString();
 
       // a. Commented out Daily.co generation to use 100% free, cardless Jitsi Meet as Primary
       /*
